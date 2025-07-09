@@ -3,6 +3,7 @@ package com.payments.controllers.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.payments.commom.Notification;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -21,6 +22,32 @@ public class TransactionRequest {
     }
 
     public TransactionRequest() {
+    }
+
+    public boolean valueIsValid() {
+        return this.getValue().signum() == -1 || this.getValue().compareTo(BigDecimal.ZERO) == 0;
+    }
+
+    public boolean dateTimeIsvalid() {
+        OffsetDateTime now = OffsetDateTime.now();
+        return this.getDateTime().isAfter(now);
+    }
+
+    public Notification validate() {
+        Notification notification = new Notification();
+        OffsetDateTime now = OffsetDateTime.now();
+
+        if (this.value == null || this.value.compareTo(BigDecimal.ZERO) <= 0) {
+            notification.addError("Value cannot be negative or zero.");
+        }
+
+        if (dateTime == null) {
+            notification.addError("Date cannot be null.");
+        } else if (dateTime.isAfter(now)) {
+            notification.addError("Date cannot be less than current date.");
+        }
+
+        return notification;
     }
 
     public BigDecimal getValue() {

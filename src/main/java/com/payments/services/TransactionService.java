@@ -1,7 +1,7 @@
 package com.payments.services;
 
 
-import com.payments.TransactionRepository;
+import com.payments.commom.Notification;
 import com.payments.controllers.request.TransactionRequest;
 import com.payments.exceptions.TransactionException;
 import com.payments.model.Transaction;
@@ -11,29 +11,27 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
 public class TransactionService implements TransactionServiceInt {
 
-    private static TransactionRepository transactionRepository;
     Logger logger = LoggerFactory.getLogger(TransactionService.class);
+
+    private List<Transaction> transactionList = new ArrayList<>();
 
     @Override
     public void saveTransaction(TransactionRequest request) throws TransactionException {
 
-        boolean valueIsNotValid = request.getValue().signum() == -1 || request.getValue().compareTo(BigDecimal.ZERO) == 0;
-        if(valueIsNotValid) {
-            throw new TransactionException("Value cannot be negative or zero");
+        Notification notification = request.validate();
+
+        if(notification.hasErrors()) {
+            throw new TransactionException(notification.errorMessage());
         }
 
-        OffsetDateTime now = OffsetDateTime.now();
-        if(request.getDateTime().isAfter(now)) {
-            throw new TransactionException("Date cannot be less than current date");
-        }
-
-        Transaction transaction = new Transaction(request.getValue(), request.getDateTime());
-        transactionRepository.save(transaction);
+        transactionList.add(new Transaction(request.getValue(), request.getDateTime()));
         logger.info("Transaction save successfully");
     }
 }
