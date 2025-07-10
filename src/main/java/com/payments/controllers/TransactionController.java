@@ -20,7 +20,11 @@ public class TransactionController {
 
     Logger logger = LoggerFactory.getLogger(TransactionController.class);
 
-    private static TransactionServiceInt transactionService;
+    private final TransactionServiceInt transactionService;
+
+    public TransactionController(TransactionServiceInt transactionService) {
+        this.transactionService = transactionService;
+    }
 
     @PostMapping
     public ResponseEntity newTransaction(@RequestBody TransactionRequest transactionRequest) throws TransactionException {
