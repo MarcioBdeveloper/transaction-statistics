@@ -3,7 +3,6 @@ package com.payments.controllers;
 
 import com.payments.controllers.request.TransactionRequest;
 import com.payments.exceptions.TransactionException;
-import com.payments.services.TransactionService;
 import com.payments.services.TransactionServiceInt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
