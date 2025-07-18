@@ -41,7 +41,7 @@ public class TransactionControllerTest {
     }
 
     @Test
-    public void whenPostValidTransaction_thenStatus400() {
+    public void whenPostInvalidTransactionRequest_thenStatus400() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<TransactionRequest> entity = new HttpEntity<>(null, headers);
@@ -51,7 +51,7 @@ public class TransactionControllerTest {
     }
 
     @Test
-    public void whenPostValidTransaction_thenStatus422() {
+    public void whenPostInvalidTransaction_thenStatus422() {
         TransactionRequest request = new TransactionRequest();
         request.setValue(new BigDecimal("-10.50"));
         request.setDateTime(OffsetDateTime.parse("2025-07-10T15:40:00Z"));
@@ -62,5 +62,11 @@ public class TransactionControllerTest {
         ResponseEntity<Void> response = restTemplate.postForEntity(baseUrl(), entity, Void.class);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
+    }
+
+    @Test
+    public void whenDeleteTransaction_thenStatus200() {
+        ResponseEntity<Void> response = restTemplate.exchange(baseUrl(), HttpMethod.DELETE, null, Void.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 }

@@ -33,6 +33,12 @@ public class TransactionService implements TransactionServiceInt {
         logger.info("Transaction save successfully");
     }
 
+    @Override
+    public void deleteTransactions() throws TransactionException {
+        this.transactionList.clear();
+        logger.info("Transactions deleted");
+    }
+
     public List<Transaction> getTransactionList() {
         return transactionList;
     }

@@ -5,4 +5,5 @@ import com.payments.controllers.request.TransactionRequest;
 
 public interface TransactionServiceInt {
    void saveTransaction(TransactionRequest request) throws TransactionException;
+   void deleteTransactions() throws TransactionException;
 }
