@@ -8,10 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/transaction")
 @RestController
@@ -26,10 +23,17 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity newTransaction(@RequestBody TransactionRequest transactionRequest) throws TransactionException {
+    public ResponseEntity<Void> newTransaction(@RequestBody TransactionRequest transactionRequest) throws TransactionException {
         logger.info("Transaction received");
         transactionService.saveTransaction(transactionRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteTransactions() throws TransactionException {
+        logger.info("Delete transactions");
+        transactionService.deleteTransactions();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
