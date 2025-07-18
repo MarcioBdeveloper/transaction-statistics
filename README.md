@@ -8,8 +8,8 @@ This project is a API Rest that receive transactions and return statistic this t
 - **Libraries:**
     - `spring-boot`
     - `jackson-databind`
-    - `junit-jupiter-api`
-    - `junit-jupiter-engine`
+    - `spring-boot-starter-test`
+  
 - **Build Tool:** Maven
 
 ## Design patterns

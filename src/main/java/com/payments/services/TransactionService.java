@@ -32,4 +32,8 @@ public class TransactionService implements TransactionServiceInt {
         transactionList.add(new Transaction(request.getValue(), request.getDateTime()));
         logger.info("Transaction save successfully");
     }
+
+    public List<Transaction> getTransactionList() {
+        return transactionList;
+    }
 }

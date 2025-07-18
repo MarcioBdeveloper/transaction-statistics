@@ -30,9 +30,7 @@ public class TransactionRequest {
             notification.addError("Value cannot be negative or zero");
         }
 
-        if (dateTime == null) {
-            notification.addError("Date cannot be null.");
-        } else if (dateTime.isAfter(now)) {
+        if (dateTime.isAfter(now)) {
             notification.addError("Date cannot be less than current date");
         }
 
