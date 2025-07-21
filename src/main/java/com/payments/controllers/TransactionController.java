@@ -48,8 +48,8 @@ public class TransactionController {
         return ResponseEntity.ok(new TransactionStatisticsResponse(
                 statistics.getCount(),
                 BigDecimal.valueOf(statistics.getSum()),
-                BigDecimal.valueOf(statistics.getMin()),
-                BigDecimal.valueOf(statistics.getMax()),
+                BigDecimal.valueOf(statistics.getMin() == Double.POSITIVE_INFINITY ? 0.0 : statistics.getMin()),
+                BigDecimal.valueOf(statistics.getMax() == Double.NEGATIVE_INFINITY ? 0.0 : statistics.getMax()),
                 BigDecimal.valueOf(statistics.getAverage()).setScale(2, RoundingMode.HALF_UP)
         ));
     }
