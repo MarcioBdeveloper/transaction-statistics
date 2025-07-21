@@ -1,6 +1,7 @@
 package com.payments.controllers;
 
 import com.payments.controllers.request.TransactionRequest;
+import com.payments.controllers.response.TransactionStatisticsResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +12,7 @@ import org.springframework.http.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -68,5 +70,23 @@ public class TransactionControllerTest {
     public void whenDeleteTransaction_thenStatus200() {
         ResponseEntity<Void> response = restTemplate.exchange(baseUrl(), HttpMethod.DELETE, null, Void.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void shouldReturnTransactionStatistics() {
+        ResponseEntity<TransactionStatisticsResponse> response = restTemplate.exchange(
+                baseUrl().concat("/statistic"),
+                HttpMethod.GET,
+                null,
+                TransactionStatisticsResponse.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+
+        TransactionStatisticsResponse stats = response.getBody();
+
+        assertThat(stats.count()).isGreaterThanOrEqualTo(0);
+        assertThat(stats.sum()).isGreaterThanOrEqualTo(BigDecimal.valueOf(0.0));
     }
 }
