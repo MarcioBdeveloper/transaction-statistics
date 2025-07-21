@@ -56,7 +56,6 @@ public class TransactionService implements TransactionServiceInt {
                         !t.getDateTime().isBefore(oneMinuteAgo) &&
                         !t.getDateTime().isAfter(now))
                 .map(Transaction::getValue)
-                //.filter(v -> v != null)
                 .mapToDouble(BigDecimal::doubleValue)
                 .summaryStatistics();
     }
