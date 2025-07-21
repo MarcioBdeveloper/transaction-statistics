@@ -74,19 +74,29 @@ public class TransactionControllerTest {
 
     @Test
     public void shouldReturnTransactionStatistics() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        int totalRequest = 5;
+        for(int i = 1;i < totalRequest; i++) {
+            TransactionRequest request = new TransactionRequest();
+            request.setValue(new BigDecimal(i));
+            request.setDateTime(OffsetDateTime.now().minusNanos(1));
+
+            HttpEntity<TransactionRequest> entity = new HttpEntity<>(request, headers);
+            restTemplate.postForEntity(baseUrl(), entity, Void.class);
+        }
+
         ResponseEntity<TransactionStatisticsResponse> response = restTemplate.exchange(
                 baseUrl().concat("/statistic"),
                 HttpMethod.GET,
                 null,
                 TransactionStatisticsResponse.class
         );
+        TransactionStatisticsResponse stats = response.getBody();
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
-
-        TransactionStatisticsResponse stats = response.getBody();
-
-        assertThat(stats.count()).isGreaterThanOrEqualTo(0);
-        assertThat(stats.sum()).isGreaterThanOrEqualTo(BigDecimal.valueOf(0.0));
+        assertEquals(4, stats.count());
+        assertEquals(new BigDecimal("10.0"), stats.sum());
     }
 }
