@@ -27,7 +27,7 @@ public class TransactionController {
 
     @PostMapping
     public ResponseEntity<Void> newTransaction(@RequestBody TransactionRequest transactionRequest) throws TransactionException {
-        logger.info("Transaction received");
+        logger.info("Transaction received: {}", transactionRequest);
         transactionService.saveTransaction(transactionRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

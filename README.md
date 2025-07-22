@@ -3,6 +3,9 @@
 ## 📌 Project Overview
 This project is a API Rest that receive transactions and return statistic this transaction. This project is lab of learn about design pattern.
 
+## 📌 Busines Rules
+This Api receive transactions and calc quant, sum, average, min value and max value of transactions.
+
 ## 📌 Technologies Used
 - **Java Version:** 21
 - **Libraries:**
