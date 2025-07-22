@@ -9,7 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 
 
@@ -37,6 +40,24 @@ public class TransactionService implements TransactionServiceInt {
     public void deleteTransactions() throws TransactionException {
         this.transactionList.clear();
         logger.info("Transactions deleted");
+    }
+
+    @Override
+    public DoubleSummaryStatistics transactionStatistics() {
+        return getLastMinuteStatistics(this.transactionList);
+    }
+
+    public static DoubleSummaryStatistics getLastMinuteStatistics(List<Transaction> transactions) {
+        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime oneMinuteAgo = now.minusMinutes(1);
+
+        return transactions.stream()
+                .filter(t -> t.getDateTime() != null &&
+                        !t.getDateTime().isBefore(oneMinuteAgo) &&
+                        !t.getDateTime().isAfter(now))
+                .map(Transaction::getValue)
+                .mapToDouble(BigDecimal::doubleValue)
+                .summaryStatistics();
     }
 
     public List<Transaction> getTransactionList() {
