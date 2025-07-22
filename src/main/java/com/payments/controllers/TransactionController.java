@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.DoubleSummaryStatistics;
 
 @RequestMapping("/transaction")
@@ -45,13 +43,7 @@ public class TransactionController {
     public ResponseEntity<TransactionStatisticsResponse> transactionStatistics() throws TransactionException {
         logger.info("Transactions statistics");
         DoubleSummaryStatistics statistics = transactionService.transactionStatistics();
-        return ResponseEntity.ok(new TransactionStatisticsResponse(
-                statistics.getCount(),
-                BigDecimal.valueOf(statistics.getSum()),
-                BigDecimal.valueOf(statistics.getMin() == Double.POSITIVE_INFINITY ? 0.0 : statistics.getMin()),
-                BigDecimal.valueOf(statistics.getMax() == Double.NEGATIVE_INFINITY ? 0.0 : statistics.getMax()),
-                BigDecimal.valueOf(statistics.getAverage()).setScale(2, RoundingMode.HALF_UP)
-        ));
+        return ResponseEntity.ok(TransactionStatisticsResponse.doubleSummaryStatisticsToResponse(statistics));
     }
 
 }
