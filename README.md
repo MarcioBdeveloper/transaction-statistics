@@ -23,7 +23,7 @@ This Api receive transactions and calc quant, sum, average, min value and max va
 
 ## 🚀 Build and Run the Project
 
-### 🔧 Running with Java (Locally)
+### 🔧 Running Java (Locally)
 1. Open your **command-line terminal**.
 2. Navigate to the project directory: Example - cd /Enviroment/youworkspace/transaction-statistics
 3. Execute the command: **mvn clean package**
@@ -34,3 +34,17 @@ This Api receive transactions and calc quant, sum, average, min value and max va
    "value":"90",
    "dateTime":"2025-07-13T15:40:00Z"
    }'`
+
+### 🔧 Running Java using Docker (Locally)
+1. Open your **command-line terminal**.
+2. Navigate to the project directory: Example - cd /Enviroment/youworkspace/transaction-statistics
+3. Execute the command: **mvn clean package**
+4. Execute the command for create an image docker: **docker buildx build -t transaction-statistics:v1 .**
+5. Execute the command for running image: **docker run -it -p 8080:8080 transaction-statistics:v1**
+5. Execute curl the terminal: - `curl --location 'localhost:8080/transaction' \
+   --header 'Content-Type: application/json' \
+   --data '{
+   "value":"90",
+   "dateTime":"2025-07-13T15:40:00Z"
+   }'`
+
